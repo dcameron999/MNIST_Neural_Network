@@ -4,14 +4,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from colorama import Fore
 
-
+SCALE_FACTOR = 255 # MNIST data has vales from 0 to 255.  This scales them down to a number from 0 to 1.  Don't change
 LAYER0_SIZE = 784 # This is the size of each image.  Don't change.
 LAYER1_SIZE = 30
 LAYER2_SIZE = 20
 LAYER3_SIZE = 10
-SCALE_FACTOR = 255
 TRAINING_ITERATIONS = 500
-TRAINING_RATE = 0.55
+TRAINING_RATE = 0.5
 NUMBER_OF_TESTS = 8000 # Max is 10,000
 SHOW_IMAGES = False # Set to True to draw the image of the incorrect predictions.  Not recommended if NUMBER_OF_TESTS > 50
 
