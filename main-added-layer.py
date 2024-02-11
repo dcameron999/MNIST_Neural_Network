@@ -11,7 +11,9 @@ LAYER2_SIZE = 20
 LAYER3_SIZE = 10
 TRAINING_ITERATIONS = 500
 TRAINING_RATE = 0.5
-NUMBER_OF_TESTS = 8000 # Max is 10,000
+TRAIN_DATA_FILE = 'MNIST_CSV/mnist_train.csv'
+TEST_DATA_FILE = 'MNIST_CSV/mnist_test.csv'
+NUMBER_OF_TESTS = 5000
 SHOW_IMAGES = False # Set to True to draw the image of the incorrect predictions.  Not recommended if NUMBER_OF_TESTS > 50
 
 # This is a simple neural network for MNIST hand written numbers
@@ -190,7 +192,7 @@ users_choice = input('Press Y to train the model or N to jump to testing the mod
 if users_choice == 'y':
     print('Training the model now...')
     # Set up the data we need for training and testing
-    dataframe_train = pd.read_csv(filepath_or_buffer='MNIST_CSV/mnist_train.csv', header=None)
+    dataframe_train = pd.read_csv(filepath_or_buffer=TRAIN_DATA_FILE, header=None)
     data_train = np.array(dataframe_train)
     np.random.shuffle(data_train)
     data_train = data_train.T
@@ -209,7 +211,7 @@ with open("trained_model_parameters2.pkl","rb") as trained_parameters_file:
     W1, b1, W2, b2, W3, b3, trained_accuracy = pickle.load(trained_parameters_file)
 
 # Use the trained model to predict test data values
-dataframe_test = pd.read_csv(filepath_or_buffer='MNIST_CSV/mnist_test.csv',header=None)
+dataframe_test = pd.read_csv(filepath_or_buffer=TEST_DATA_FILE,header=None)
 data_test = np.array(dataframe_test)
 np.random.shuffle(data_test)
 data_test = data_test.T
