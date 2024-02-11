@@ -94,8 +94,6 @@ def forward_propagation(W1, b1, W2, b2, X):
     # A1 = ReLU(Z1) = first layer - activation function is ReLU
     # Z2 = W2 * A1 + b2 = unactivated second layer (where W2 = weights for layer 2, b2 = biases for layer 2)
     # A2 = softmax(Z2) = second layer - activation function is Softmax
-    # print('Shape of W1: ', W1.shape)
-    # print('Shape of X: ',X.shape)
     Z1 = W1.dot(X) + b1
     A1 = ReLU(Z1)
     Z2 = W2.dot(A1) + b2
@@ -130,7 +128,6 @@ def update_parameters(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha):
     return W1, b1, W2, b2
 
 def get_accuracy(predictions, Y):
-    #print(predictions, Y)
     return np.sum(predictions == Y) / Y.size * 100
 
 def get_predictions(A2):
