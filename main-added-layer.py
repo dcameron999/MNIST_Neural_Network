@@ -107,7 +107,7 @@ def forward_propagation(W1, b1, W2, b2, W3, b3, X):
     A3 = softmax(Z3)
     return Z1, A1, Z2, A2, Z3, A3
 
-def backwards_propagation(Z1, A1, Z2, A2, Z3, A3, W2, W3, X, Y):
+def backwards_propagation(Z1, A1, Z2, A2, Z3, A3, W2, W3, X, one_hot_Y, m):
     # Back Propagation
     # dZ2 = A2 - Y = error of the second layer (where Y is the actual labels one hot encoded)
     # dW2 = 1 / m * dZ2 * A1 (where m is the number of training examples)
@@ -115,8 +115,7 @@ def backwards_propagation(Z1, A1, Z2, A2, Z3, A3, W2, W3, X, Y):
     # dZ1 = W2 * dZ2 * g = error of the first layer (where g is the derivative of the activation function)
     # dW1 = 1 / m * dZ1 * A0 (where m is the number of training examples)
     # db2 = 1 / m * sum dZ1 (where m is the number of training examples)
-    one_hot_Y = one_hot(Y)
-    m = Y.size
+
     dZ3 = 2 * (A3 - one_hot_Y)
     dW3 = dZ3.dot(A2.T) / m
     db3 = np.sum(dZ3,1) / m
@@ -149,10 +148,12 @@ def get_predictions(A3):
 
 
 def gradient_descent(X, Y, iterations, alpha):
+    one_hot_Y = one_hot(Y)
+    m = Y.size
     W1, b1, W2, b2, W3, b3 = initialize_parameters()
     for i in range(iterations):
         Z1, A1, Z2, A2, Z3, A3 = forward_propagation(W1, b1, W2, b2, W3, b3, X)
-        dW1, db1, dW2, db2, dW3, db3 = backwards_propagation(Z1, A1, Z2, A2, Z3, A3, W2, W3, X, Y)
+        dW1, db1, dW2, db2, dW3, db3 = backwards_propagation(Z1, A1, Z2, A2, Z3, A3, W2, W3, X, one_hot_Y, m)
         W1, b1, W2, b2, W3, b3 = update_parameters(W1, b1, W2, b2, W3, b3, dW1, db1, dW2, db2, dW3, db3, alpha)
         if (i + 1) % (iterations / 10) == 0:
             print('Iteration: ' + Fore.LIGHTCYAN_EX + str(i + 1) + Fore.RESET)
