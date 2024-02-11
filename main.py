@@ -6,7 +6,7 @@ from colorama import Fore
 
 
 LAYER0_SIZE = 784
-LAYER1_SIZE = 10
+LAYER1_SIZE = 50
 LAYER2_SIZE = 10
 SCALE_FACTOR = 255
 
@@ -122,9 +122,9 @@ def backwards_propagation(Z1, A1, Z2, A2, W2, X, Y):
 
 def update_parameters(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha):
     W1 -= alpha * dW1
-    b1 -= alpha * np.reshape(db1, (10,1))
+    b1 -= alpha * np.reshape(db1, (LAYER1_SIZE,1))
     W2 -= alpha * dW2
-    b2 -= alpha * np.reshape(db2, (10,1))
+    b2 -= alpha * np.reshape(db2, (LAYER2_SIZE,1))
 
     return W1, b1, W2, b2
 
