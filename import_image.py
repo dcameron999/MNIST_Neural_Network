@@ -3,9 +3,9 @@ import cv2
 import matplotlib.pyplot as plt
 
 
-FILE_TO_EXPORT_TO = 'my_number2.csv'
-FILE_TO_IMPORT = 'eight2.bmp'
-LABEL = 8
+FILE_TO_EXPORT_TO = 'my_numbers.csv'
+FILE_TO_IMPORT = 'four.bmp'
+LABEL = 4
 
 # Load image
 image_to_import = cv2.imread(FILE_TO_IMPORT, cv2.IMREAD_GRAYSCALE)
