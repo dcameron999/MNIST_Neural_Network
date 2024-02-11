@@ -5,12 +5,15 @@ import matplotlib.pyplot as plt
 from colorama import Fore
 
 
-LAYER0_SIZE = 784
+LAYER0_SIZE = 784 # This is the size of each image.  Don't change.
 LAYER1_SIZE = 30
 LAYER2_SIZE = 20
 LAYER3_SIZE = 10
 SCALE_FACTOR = 255
 TRAINING_ITERATIONS = 500
+TRAINING_RATE = 0.55
+NUMBER_OF_TESTS = 8000 # Max is 10,000
+SHOW_IMAGES = False # Set to True to draw the image of the incorrect predictions.  Not recommended if NUMBER_OF_TESTS > 50
 
 # This is a simple neural network for MNIST hand written numbers
 # Layer 0 (input)       Layer 1 (hidden)    Layer 2 (hidden)        Layer 3 (output)
@@ -156,7 +159,7 @@ def gradient_descent(X, Y, iterations, alpha):
         dW1, db1, dW2, db2, dW3, db3 = backwards_propagation(Z1, A1, Z2, A2, Z3, A3, W2, W3, X, one_hot_Y, m)
         W1, b1, W2, b2, W3, b3 = update_parameters(W1, b1, W2, b2, W3, b3, dW1, db1, dW2, db2, dW3, db3, alpha)
         if (i + 1) % (iterations / 10) == 0:
-            print('Iteration: ' + Fore.LIGHTCYAN_EX + str(i + 1) + Fore.RESET)
+            print('Iteration: ' + Fore.LIGHTCYAN_EX + str(i + 1) + Fore.RESET + ' - ' + Fore.LIGHTWHITE_EX + '%.2f' % ((i+1)/iterations*100) + '%' + Fore.RESET + ' complete')
             print('Accuracy: ' + Fore.LIGHTGREEN_EX + '%.2f' % get_accuracy(get_predictions(A3),Y) + '%' + Fore.RESET)
     return W1, b1, W2, b2, W3, b3, get_accuracy(get_predictions(A3),Y)
 
@@ -175,7 +178,8 @@ def show_prediction(index,X, Y, W1, b1, W2, b2, W3, b3):
         return True
     else:
         print("Predicted Number: " + Fore.LIGHTRED_EX + str(prediction[0]) + Fore.RESET + '  Actual Number: ' + Fore.LIGHTCYAN_EX + str(label) + Fore.RESET)
-        #draw_mnist_image(X.T[index], label, False,prediction[0])
+        if SHOW_IMAGES:
+            draw_mnist_image(X.T[index], label, False,prediction[0])
         return False
 
 
@@ -195,7 +199,7 @@ if users_choice == 'y':
     data_train = data_train[1:len(data_train)] / SCALE_FACTOR
 
     # Train the model
-    W1, b1, W2, b2, W3, b3, trained_accuracy = gradient_descent(X=data_train, Y=labels_train, iterations=TRAINING_ITERATIONS, alpha=0.5)
+    W1, b1, W2, b2, W3, b3, trained_accuracy = gradient_descent(X=data_train, Y=labels_train, iterations=TRAINING_ITERATIONS, alpha=TRAINING_RATE)
 
     # Store the trained model parameters to file
     with open("trained_model_parameters2.pkl","wb") as trained_parameters_file:
@@ -215,7 +219,7 @@ data_test = data_test[1:len(data_test)] / SCALE_FACTOR
 
 print('This model has a trained accuracy of ' + Fore.LIGHTGREEN_EX + '%.2f' % trained_accuracy + '%' + Fore.RESET)
 correct_prediction_count = 0
-number_of_tests = 5000
+number_of_tests = NUMBER_OF_TESTS
 for i in range(0, number_of_tests):
     prediction_is_correct = show_prediction(i,data_test,labels_test,W1,b1,W2,b2, W3, b3)
     correct_prediction_count += prediction_is_correct
