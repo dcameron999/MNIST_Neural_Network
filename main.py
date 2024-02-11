@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from colorama import Fore
 
+
 LAYER0_SIZE = 784
 LAYER1_SIZE = 10
 LAYER2_SIZE = 10
